@@ -114,3 +114,16 @@ gcloud run deploy nova-assistant \
 ```
 *(By using `--set-build-env-vars`, Vite securely interpolates the API key into the final static container without leaking runtime secrets).*
 
+### 🔥 Firebase Hosting (Zero-Billing Alternative)
+
+If your Google Cloud Project lacks an attached Billing Account (common in hackathon environments), rely on Google Firebase Hosting instead.
+
+1. Build locally:
+   ```bash
+   npm run build
+   ```
+2. Deploy directly to the Google CDN:
+   ```bash
+   npx firebase-tools deploy --only hosting
+   ```
+
