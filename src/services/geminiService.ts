@@ -13,7 +13,7 @@ export const generateAssistantResponse = async (prompt: string, contextData: Use
   }
 
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
     
     // System prompt behavior embedded into the prompt string
     const systemInstruction = `
