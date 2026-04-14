@@ -95,3 +95,22 @@ Nova tightly integrates with **Google Gemini (1.5 Flash/Pro)** via the `@google/
 - **Testing:** The integration is rigorously validated locally for component error boundaries (handling missing API keys and resolving generic 404 fallback issues across network environments).
 - **Accessibility:** Form UI inputs feature high-contrast indicators. The Semantic layout pairs with a Premium Dark Mode scheme tailored to reduce eye strain, designed for maximum legibility.
 - **Google Services:** Actively employs the `gemini-flash-latest` model streaming through the Google Generative AI Node SDK, fulfilling the primary requirement to interface securely and intelligently with Google cloud platforms.
+
+---
+
+### ☁️ Cloud Run Deployment
+
+This project is strictly configured for 1-click deployment to **Google Cloud Run**, fully embracing Google's Serverless architecture.
+
+A `Dockerfile` and `.dockerignore` are included in the repository using a highly-optimized multi-stage build.
+
+To push live, run:
+```bash
+gcloud run deploy nova-assistant \
+  --source . \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --set-build-env-vars="VITE_GEMINI_API_KEY=your_key_here"
+```
+*(By using `--set-build-env-vars`, Vite securely interpolates the API key into the final static container without leaking runtime secrets).*
+
