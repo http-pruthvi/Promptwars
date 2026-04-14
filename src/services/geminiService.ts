@@ -13,7 +13,7 @@ export const generateAssistantResponse = async (prompt: string, contextData: Use
   }
 
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     
     // System prompt behavior embedded into the prompt string
     const systemInstruction = `
@@ -29,8 +29,9 @@ ${JSON.stringify(contextData, null, 2)}
     const result = await model.generateContent(fullPrompt);
     const response = await result.response;
     return response.text();
-  } catch (error) {
+  } catch (err: unknown) {
+    const error = err as Error;
     console.error("Gemini API Error:", error);
-    return "I encountered an error while processing your request. Please check your API key or network connection.";
+    return `**API Error details:** \n\n\`${error?.message || error.toString()}\`\n\nPlease check your key or network.`;
   }
 };
