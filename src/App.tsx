@@ -54,7 +54,8 @@ function App() {
         content: response 
       };
       setMessages(prev => [...prev, assistantMessage]);
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
