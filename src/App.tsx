@@ -75,9 +75,10 @@ function App() {
         animate={{ x: 0, opacity: 1 }}
         className="glass-panel" 
         style={{ width: '300px', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+        aria-label="Workspace Context"
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div style={{ background: 'var(--accent-gradient)', padding: '0.5rem', borderRadius: '8px' }}>
+          <div style={{ background: 'var(--accent-gradient)', padding: '0.5rem', borderRadius: '8px' }} aria-hidden="true">
             <Sparkles size={24} color="white" />
           </div>
           <h2 className="text-gradient">Nova</h2>
@@ -85,11 +86,11 @@ function App() {
 
         <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--glass-border)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', color: 'var(--text-secondary)' }}>
-            <LayoutDashboard size={18} />
+            <LayoutDashboard size={18} aria-hidden="true" />
             <h3 style={{ fontSize: '0.9rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Live Context</h3>
           </div>
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.85rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.85rem' }} role="status" aria-live="polite">
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ color: 'var(--text-secondary)' }}>Status</span>
               <span style={{ color: 'var(--success)' }}>● Online</span>
@@ -112,9 +113,14 @@ function App() {
         animate={{ y: 0, opacity: 1 }}
         className="glass-panel" 
         style={{ flex: 1, display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}
+        aria-label="Chat Interface"
       >
         {/* Chat History */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <div 
+          role="log"
+          aria-live="polite"
+          style={{ flex: 1, overflowY: 'auto', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+        >
           <AnimatePresence>
             {messages.map((msg) => (
               <motion.div 
@@ -127,13 +133,15 @@ function App() {
                   flexDirection: msg.role === 'user' ? 'row-reverse' : 'row'
                 }}
               >
-                <div style={{ 
+                <div 
+                  aria-label={msg.role === 'user' ? "User Avatar" : "Assistant Avatar"}
+                  style={{ 
                   width: '40px', height: '40px', borderRadius: '50%', 
                   background: msg.role === 'user' ? 'rgba(255,255,255,0.1)' : 'var(--accent-gradient)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   flexShrink: 0
                 }}>
-                  {msg.role === 'user' ? <User size={20} /> : <Bot size={20} />}
+                  {msg.role === 'user' ? <User size={20} aria-hidden="true" /> : <Bot size={20} aria-hidden="true" />}
                 </div>
                 
                 <div style={{ 
@@ -156,12 +164,12 @@ function App() {
               </motion.div>
             ))}
             {isLoading && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: 'flex', gap: '1rem' }}>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: 'flex', gap: '1rem' }} aria-busy="true" aria-label="Nova is typing...">
                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--accent-gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Bot size={20} />
+                  <Bot size={20} aria-hidden="true" />
                 </div>
                 <div style={{ padding: '1rem', display: 'flex', alignItems: 'center' }}>
-                  <Loader2 size={20} className="animate-spin" style={{ animation: 'spin 1s linear infinite' }} />
+                  <Loader2 size={20} className="animate-spin" style={{ animation: 'spin 1s linear infinite' }} aria-hidden="true" />
                   <style>{`@keyframes spin { 100% { transform: rotate(360deg); } }`}</style>
                 </div>
               </motion.div>
@@ -172,7 +180,7 @@ function App() {
 
         {/* Input Area */}
         <div style={{ padding: '1.5rem', borderTop: '1px solid var(--glass-border)', background: 'rgba(15, 23, 42, 0.4)' }}>
-          <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '1rem', position: 'relative' }}>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '1rem', position: 'relative' }} aria-label="Message Form">
             <input 
               type="text" 
               value={input}
@@ -181,18 +189,20 @@ function App() {
               className="input-glass"
               style={{ flex: 1, paddingRight: '4rem' }}
               disabled={isLoading}
+              aria-label="Message Input"
             />
             <button 
               type="submit" 
               className="btn btn-primary"
               disabled={isLoading || !input.trim()}
               style={{ position: 'absolute', right: '0.5rem', top: '0.5rem', bottom: '0.5rem', padding: '0 1.25rem' }}
+              aria-label="Send Message"
             >
-              <Send size={18} />
+              <Send size={18} aria-hidden="true" />
             </button>
           </form>
           <p style={{ textAlign: 'center', fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.75rem' }}>
-            Nova uses Gemini 1.5 and local context to provide intelligent responses.
+            Nova uses Google Gemini AI and local context to provide intelligent responses.
           </p>
         </div>
       </motion.main>
